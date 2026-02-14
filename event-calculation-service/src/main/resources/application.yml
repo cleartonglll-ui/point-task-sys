@@ -1,0 +1,73 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: event-calculation-service
+
+kafka:
+  bootstrap-servers: localhost:9092
+
+redis:
+  host: localhost
+  port: 6379
+server:
+  port: 8083
+
+spring:
+  application:
+    name: event-calculation-service
+
+  # Kafka配置
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: event-calculation-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/behavioral_reward?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+
+# Kafka Topic配置
+kafka:
+  topic:
+    behavior-event: behavior-event-topic
+    reward-delivery: reward-delivery-topic
+
+# 积分配置
+point:
+  max-total: 1000000  # 用户最大积分
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8080
+
+# 日志配置
+logging:
+  level:
+    com.user.growth: INFO
+
+# Actuator监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always

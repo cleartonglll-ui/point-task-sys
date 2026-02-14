@@ -1,0 +1,87 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: task-config-service
+
+# MySQL / datasource placeholders - configure in production
+mysql:
+  url: jdbc:mysql://localhost:3306/behavioral_reward
+server:
+  port: 8082
+
+spring:
+  application:
+    name: task-config-service
+  
+  # MySQL配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/behavioral_reward?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 3000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.user.growth.task.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# Aviator表达式引擎配置
+aviator:
+  cache-size: 1000
+  trace-enabled: false
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8080
+  web-context-unify: false
+
+# 日志配置
+logging:
+  level:
+    com.user.growth: INFO
+    com.baomidou.mybatisplus: DEBUG
+
+# Actuator监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always

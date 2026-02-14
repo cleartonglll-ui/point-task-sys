@@ -1,0 +1,90 @@
+server:
+  port: 8081
+
+# Datasource and external system connection settings should be provided in
+# production via environment variables or an externalized configuration
+spring:
+  application:
+    name: event-collection-service
+
+# MongoDB, Kafka, Redis config placeholders (fill in for a real deployment)
+mongodb:
+  uri: mongodb://localhost:27017/behavioral_reward
+
+kafka:
+  bootstrap-servers: localhost:9092
+server:
+  port: 8081
+
+spring:
+  application:
+    name: event-collection-service
+  
+  # MongoDB配置
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: behavioral_reward
+      username: 
+      password: 
+      auto-index-creation: true
+
+  # Kafka配置
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3
+      acks: all
+    consumer:
+      group-id: event-collection-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 3000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+# Kafka Topic配置
+kafka:
+  topic:
+    behavior-event: behavior-event-topic
+
+# Sentinel配置
+sentinel:
+  transport:
+    dashboard: localhost:8080
+  web-context-unify: false
+
+# 日志配置
+logging:
+  level:
+    com.user.growth: INFO
+    org.springframework.data.mongodb: INFO
+    org.springframework.kafka: INFO
+
+# Actuator监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
